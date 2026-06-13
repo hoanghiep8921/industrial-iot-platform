@@ -1,0 +1,81 @@
+# ============================================================
+# Industrial IoT Platform - Git Ignore
+# ============================================================
+
+# ---------- Dependencies ----------
+node_modules/
+vendor/
+.pnpm-store/
+*.egg-info/
+__pycache__/
+*.pyc
+
+# ---------- Build artifacts ----------
+dist/
+build/
+target/
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# ---------- IDE & Editor ----------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---------- Environment & Config ----------
+.env
+.env.local
+.env.*.local
+*.env
+!example.env
+
+# ---------- Logs ----------
+logs/
+*.log
+!telemetry-service/test/fixtures/*.log
+
+# ---------- Temporary files ----------
+tmp/
+temp/
+*.tmp
+*.bak
+
+# ---------- Docker ----------
+docker-compose.override.yml
+
+# ---------- Terraform ----------
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+
+# ---------- Kubernetes secrets ----------
+**/secrets/
+*.key
+*.crt
+!test/fixtures/*.key
+!test/fixtures/*.crt
+
+# ---------- Test coverage ----------
+coverage/
+.nyc_output/
+*.lcov
+
+# ---------- OS files ----------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# ---------- Certificates ----------
+*.pem
+*.p12
+*.pfx
+!test/fixtures/*.pem

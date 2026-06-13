@@ -1,0 +1,70 @@
+# ============================================================
+# Industrial IoT Platform - Edge Deployment Inventory
+# ============================================================
+
+all:
+  vars:
+    ansible_user: iiot
+    ansible_ssh_private_key_file: ~/.ssh/iiot_edge.key
+    edge_version: "1.0.0"
+    mqtt_broker_host: mqtt.industrial-iot.example.com
+    mqtt_broker_port: 8883
+    enable_local_cache: true
+    local_cache_size_mb: 10240
+    log_level: info
+
+  children:
+    hanoi:
+      hosts:
+        edge-hn-01:
+          ansible_host: 192.168.1.10
+          area: area_a
+          protocols:
+            - modbus
+            - opcua
+        edge-hn-02:
+          ansible_host: 192.168.1.11
+          area: area_b
+          protocols:
+            - modbus
+      vars:
+        factory_name: "Hanoi Factory"
+        factory_code: HN
+        timezone: Asia/Ho_Chi_Minh
+
+    hochiminh:
+      hosts:
+        edge-hcm-01:
+          ansible_host: 192.168.2.10
+          area: area_a
+          protocols:
+            - modbus
+            - s7
+        edge-hcm-02:
+          ansible_host: 192.168.2.11
+          area: area_b
+          protocols:
+            - modbus
+            - opcua
+      vars:
+        factory_name: "Ho Chi Minh Factory"
+        factory_code: HCM
+        timezone: Asia/Ho_Chi_Minh
+
+    danang:
+      hosts:
+        edge-dn-01:
+          ansible_host: 192.168.3.10
+          area: area_a
+          protocols:
+            - modbus
+            - opcua
+        edge-dn-02:
+          ansible_host: 192.168.3.11
+          area: area_b
+          protocols:
+            - modbus
+      vars:
+        factory_name: "Da Nang Factory"
+        factory_code: DN
+        timezone: Asia/Ho_Chi_Minh

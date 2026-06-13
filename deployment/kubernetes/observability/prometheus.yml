@@ -1,0 +1,79 @@
+# ============================================================
+# Industrial IoT Platform - Prometheus Configuration
+# ============================================================
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: industrial-iot
+    environment: production
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+rule_files:
+  - "alerts/*.yml"
+
+scrape_configs:
+  # Kubernetes service discovery
+  - job_name: kubernetes-pods
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+
+  # EMQX MQTT Broker
+  - job_name: emqx
+    static_configs:
+      - targets: ['emqx:18083']
+    metrics_path: /api/v5/prometheus/stats
+
+  # Kafka (via JMX Exporter)
+  - job_name: kafka
+    static_configs:
+      - targets:
+        - kafka-jmx:5556
+
+  # TimescaleDB
+  - job_name: timescaledb
+    static_configs:
+      - targets: ['timescaledb-exporter:9187']
+
+  # PostgreSQL
+  - job_name: postgres
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+
+  # Redis
+  - job_name: redis
+    static_configs:
+      - targets: ['redis-exporter:9121']
+
+  # Edge Gateways
+  - job_name: edge-gateways
+    static_configs:
+      - targets:
+        - edge-hn-01:9100
+        - edge-hn-02:9100
+        - edge-hcm-01:9100
+        - edge-hcm-02:9100
+        - edge-dn-01:9100
+        - edge-dn-02:9100
+      labels:
+        job_type: edge-gateway

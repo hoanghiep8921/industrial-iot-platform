@@ -1,0 +1,50 @@
+# ============================================================
+# Industrial IoT Platform - Integration Test Environment
+# ============================================================
+version: "3.9"
+
+services:
+  # Lightweight test dependencies only
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: iiot-test-postgres
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: iiot_test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    tmpfs: /var/lib/postgresql/data  # Ephemeral storage
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d iiot_test"]
+      interval: 5s
+      retries: 3
+
+  timescaledb-test:
+    image: timescale/timescaledb:2.15-pg16
+    container_name: iiot-test-timescaledb
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: telemetry_test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    tmpfs: /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d telemetry_test"]
+      interval: 5s
+      retries: 3
+
+  redis-test:
+    image: redis:7-alpine
+    container_name: iiot-test-redis
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 3
+
+networks:
+  default:
+    driver: bridge

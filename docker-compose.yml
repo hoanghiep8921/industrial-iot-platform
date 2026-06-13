@@ -1,0 +1,14 @@
+# Industrial IoT Platform
+
+services:
+  # Include development environment
+  dev:
+    extends:
+      file: deployment/docker-compose/dev.yml
+    profiles: ["dev"]
+
+  # Include test environment
+  test:
+    extends:
+      file: deployment/docker-compose/test.yml
+    profiles: ["test"]

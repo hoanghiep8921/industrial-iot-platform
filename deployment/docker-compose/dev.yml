@@ -177,6 +177,53 @@ services:
     networks:
       - iiot-net
 
+  # ---------- Application Services ----------
+
+  # Gateway Service (MQTT → Kafka bridge)
+  gateway-service:
+    build:
+      context: ../../gateway-service
+      dockerfile: Dockerfile
+    container_name: iiot-gateway
+    depends_on:
+      emqx:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      MQTT_BROKER: emqx
+      MQTT_PORT: "1883"
+      MQTT_USERNAME: ""
+      MQTT_PASSWORD: ""
+      KAFKA_BROKER: kafka:9092
+    networks:
+      - iiot-net
+    restart: unless-stopped
+
+  # Telemetry Service (Kafka → TimescaleDB + API)
+  telemetry-service:
+    build:
+      context: ../../telemetry-service
+      dockerfile: Dockerfile
+    container_name: iiot-telemetry
+    ports:
+      - "8082:8082"
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      TSDB_HOST: timescaledb
+      TSDB_PORT: "5432"
+      TSDB_DATABASE: telemetry
+      TSDB_USER: iiot
+      TSDB_PASSWORD: iiot_dev_2024
+      KAFKA_BROKER: kafka:9092
+    networks:
+      - iiot-net
+    restart: unless-stopped
+
 volumes:
   emqx-data:
   emqx-log:

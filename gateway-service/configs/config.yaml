@@ -1,0 +1,28 @@
+# ============================================================
+# Gateway Service - Configuration
+# ============================================================
+
+# MQTT Broker (HiveMQ Cloud)
+mqtt:
+  broker: "b99f17b791e64ce9bc41ed7cf260115e.s1.eu.hivemq.cloud"
+  port: 8883
+  client_id: "industrial-iot-gateway"
+  username: "hiepdh"
+  password: "Rp_2Ngs7LQZhdb!"
+  keep_alive: 60
+  clean_session: false
+  auto_reconnect: true
+  topics:
+    - "/factory/#"
+
+# Kafka (local message bus)
+kafka:
+  brokers:
+    - "localhost:9092"
+  topic: "telemetry.raw"
+  consumer_group: "gateway-service"
+
+# Service
+service:
+  http_port: 8081
+  log_level: "info"

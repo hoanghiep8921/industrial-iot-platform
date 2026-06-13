@@ -1,0 +1,26 @@
+# ============================================================
+# Telemetry Service - Configuration
+# ============================================================
+
+# Kafka consumer
+kafka:
+  brokers:
+    - "localhost:9092"
+  topic: "telemetry.raw"
+  consumer_group: "telemetry-service"
+  num_consumers: 4
+
+# TimescaleDB
+timescaledb:
+  host: "localhost"
+  port: 5432
+  database: "telemetry"
+  username: "iiot"
+  password: "iiot_dev_2024"
+  ssl_mode: "disable"
+  max_connections: 25
+
+# Service
+service:
+  http_port: 8082
+  log_level: "info"

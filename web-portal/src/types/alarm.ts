@@ -19,14 +19,14 @@ export interface Alarm {
   ruleId: string
   ruleName: string
   machineId: string
-  factoryId: string
-  severity: string // "warning", "critical", "emergency"
-  value: number
-  status: string // "RAISED", "ACKNOWLEDGED", "RESOLVED"
-  raisedAt: string
-  ackAt?: string | null
+  metricName: string
+  triggerValue: number
+  triggerTime: string
+  ackTime?: string | null
   ackBy?: string
-  resolvedAt?: string | null
+  resolveTime?: string | null
+  status: string // "RAISED", "ACKNOWLEDGED", "RESOLVED"
+  severity: string // "warning", "critical", "emergency"
   createdAt: string
   updatedAt: string
 }

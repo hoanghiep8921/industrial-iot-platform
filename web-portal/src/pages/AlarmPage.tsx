@@ -368,12 +368,12 @@ export default function AlarmPage() {
                         <TableCell>{getSeverityChip(alarm.severity)}</TableCell>
                         <TableCell>{getStatusChip(alarm.status)}</TableCell>
                         <TableCell color="error.main" sx={{ fontWeight: 'bold' }}>
-                          {alarm.value}
+                          {alarm.triggerValue}
                         </TableCell>
-                        <TableCell>{new Date(alarm.raisedAt).toLocaleString('vi-VN')}</TableCell>
+                        <TableCell>{new Date(alarm.triggerTime).toLocaleString('vi-VN')}</TableCell>
                         <TableCell>
                           {alarm.ackBy ? (
-                            <Tooltip title={alarm.ackAt ? new Date(alarm.ackAt).toLocaleString('vi-VN') : ''}>
+                            <Tooltip title={alarm.ackTime ? new Date(alarm.ackTime).toLocaleString('vi-VN') : ''}>
                               <Chip label={alarm.ackBy} size="small" color="default" />
                             </Tooltip>
                           ) : (

@@ -13,11 +13,13 @@ import {
 } from '@mui/material'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import DevicesIcon from '@mui/icons-material/PrecisionManufacturing'
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import { useEffect } from 'react'
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: <DashboardIcon /> },
   { path: '/devices', label: 'Devices', icon: <DevicesIcon /> },
+  { path: '/alarms', label: 'Alarms', icon: <NotificationsActiveIcon /> },
 ]
 
 interface SidebarProps {

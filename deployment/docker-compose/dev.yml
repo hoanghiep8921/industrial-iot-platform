@@ -281,6 +281,39 @@ services:
       - iiot-net
     restart: unless-stopped
 
+  # Alarm Service (Rules Evaluator + Lifecycle)
+  alarm-service:
+    build:
+      context: ../../alarm-service
+      dockerfile: Dockerfile
+    container_name: iiot-alarm
+    ports:
+      - "8086:8086"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DATABASE: industrial_iot
+      POSTGRES_USER: iiot
+      POSTGRES_PASSWORD: iiot_dev_2024
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: iiot_dev_2024
+      KAFKA_BROKER: kafka:9092
+      KAFKA_TELEMETRY_TOPIC: telemetry.raw
+      KAFKA_ALARM_TOPIC: alarm.events
+      API_PORT: "8086"
+      MIGRATIONS_DIR: "/migrations"
+    networks:
+      - iiot-net
+    restart: unless-stopped
+
   # Web Portal - React Dashboard
   web-portal:
     build:

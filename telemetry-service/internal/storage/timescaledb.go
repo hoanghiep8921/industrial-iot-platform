@@ -215,7 +215,7 @@ func (db *TimescaleDB) QueryByDevice(ctx context.Context, deviceID string, from,
 // GetLatestValues returns latest values for all devices
 func (db *TimescaleDB) GetLatestValues(ctx context.Context, factoryID string) ([]*TelemetryRecord, error) {
 	query := `
-		SELECT device_id, metric_name, factory_id, area, value, unit, quality, tags, updated_at
+		SELECT device_id, metric_name, factory_id, area, value, unit, COALESCE(quality, 0), tags, updated_at
 		FROM device_latest_value
 	`
 	args := []interface{}{}

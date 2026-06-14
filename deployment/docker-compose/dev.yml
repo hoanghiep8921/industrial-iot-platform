@@ -281,6 +281,21 @@ services:
       - iiot-net
     restart: unless-stopped
 
+  # Web Portal - React Dashboard
+  web-portal:
+    build:
+      context: ../../web-portal
+      dockerfile: Dockerfile
+    container_name: iiot-web-portal
+    ports:
+      - "8090:80"
+    depends_on:
+      - telemetry-service
+      - device-service
+    networks:
+      - iiot-net
+    restart: unless-stopped
+
 volumes:
   emqx-data:
   emqx-log:

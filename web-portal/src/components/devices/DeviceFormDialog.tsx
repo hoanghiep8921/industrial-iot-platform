@@ -22,6 +22,7 @@ export default function DeviceFormDialog({ open, device, onClose, onSubmit }: De
 
   useEffect(() => {
     if (device) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm({
         serialNumber: device.serialNumber,
         name: device.name,

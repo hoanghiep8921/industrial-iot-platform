@@ -19,9 +19,9 @@ export default function TelemetryChart({ records }: TelemetryChartProps) {
       .filter((r) => r.metricName === selectedMetric)
       .slice(-100)
       .map((r) => ({
-        time: formatDateTime(r.time),
-        value: r.value,
-        device: r.deviceId.slice(0, 8),
+        time: formatDateTime(r.time ?? ''),
+        value: typeof r.value === 'number' ? r.value : null,
+        device: (r.deviceId ?? '').slice(0, 8),
       }))
   }, [records, selectedMetric])
 

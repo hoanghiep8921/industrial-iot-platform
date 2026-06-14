@@ -3,15 +3,18 @@ import AppLayout from './components/layout/AppLayout'
 import DashboardPage from './pages/DashboardPage'
 import DeviceListPage from './pages/DeviceListPage'
 import DeviceDetailPage from './pages/DeviceDetailPage'
+import ErrorBoundary from './components/common/ErrorBoundary'
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="devices" element={<DeviceListPage />} />
-        <Route path="devices/:deviceId" element={<DeviceDetailPage />} />
-      </Route>
-    </Routes>
+    <ErrorBoundary>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route index element={<ErrorBoundary><DashboardPage /></ErrorBoundary>} />
+          <Route path="devices" element={<ErrorBoundary><DeviceListPage /></ErrorBoundary>} />
+          <Route path="devices/:deviceId" element={<ErrorBoundary><DeviceDetailPage /></ErrorBoundary>} />
+        </Route>
+      </Routes>
+    </ErrorBoundary>
   )
 }

@@ -6,12 +6,21 @@ interface TopBarProps {
   onMenuClick: () => void
 }
 
+const DRAWER_WIDTH = 240
+
 export default function TopBar({ loading, onMenuClick }: TopBarProps) {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <AppBar position="sticky" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        zIndex: theme.zIndex.drawer + 1,
+        width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
+        ml: { md: `${DRAWER_WIDTH}px` },
+      }}
+    >
       <Toolbar>
         {isMobile && (
           <IconButton color="inherit" edge="start" onClick={onMenuClick} sx={{ mr: 2 }}>
@@ -26,3 +35,4 @@ export default function TopBar({ loading, onMenuClick }: TopBarProps) {
     </AppBar>
   )
 }
+

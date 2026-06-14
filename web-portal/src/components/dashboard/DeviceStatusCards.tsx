@@ -36,7 +36,7 @@ export default function DeviceStatusCards({ latestValues }: DeviceStatusCardsPro
                   <Typography variant="subtitle2" noWrap>{deviceId.slice(0, 12)}</Typography>
                   {records.slice(0, 3).map((r) => (
                     <Typography key={r.metricName} variant="body2" color="text.secondary">
-                      {r.metricName}: {r.value.toFixed(1)} {r.unit}
+                      {r.metricName}: {typeof r.value === 'number' ? r.value.toFixed(1) : String(r.value ?? '—')} {r.unit ?? ''}
                     </Typography>
                   ))}
                 </CardContent>

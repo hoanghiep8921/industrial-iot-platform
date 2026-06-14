@@ -4,14 +4,23 @@ function isObject(val: unknown): val is Record<string, unknown> {
   return typeof val === 'object' && val !== null && !Array.isArray(val)
 }
 
-/** Convert PascalCase keys to camelCase (for telemetry API) */
+/** Convert PascalCase keys to camelCase (for telemetry API).
+ * Handles acronyms: "DeviceID" → "deviceId", "FactoryID" → "factoryId" */
 export function pascalToCamel<T>(obj: T): T {
   if (Array.isArray(obj)) return obj.map(pascalToCamel) as unknown as T
   if (!isObject(obj)) return obj
 
   const result: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(obj)) {
-    const camelKey = key.charAt(0).toLowerCase() + key.slice(1)
+    // Convert PascalCase or UPPER_CASE segments to camelCase
+    // e.g. "DeviceID" → "deviceId", "MetricName" → "metricName"
+    const camelKey = key
+      // Insert underscore before sequences of uppercase letters followed by lowercase: "DeviceID" → "Device_Id" (not needed, different approach)
+      // Replace sequences like "ID" at end, or "ID" followed by uppercase, to "Id"
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')  // e.g. "DeviceID" stays, but "DeviceIDCard" → "DeviceID_Card"
+      .replace(/([a-z\d])([A-Z])/g, '$1_$2')        // "MetricName" → "Metric_Name"
+      .toLowerCase()
+      .replace(/_([a-z])/g, (_, c: string) => c.toUpperCase()) // snake to camel: "metric_name" → "metricName"
     result[camelKey] = isObject(value) || Array.isArray(value) ? pascalToCamel(value) : value
   }
   return result as unknown as T
